@@ -20,11 +20,6 @@
    ```
 5. The server will run on `http://localhost:3000`
 
-
-### API Documentation
-
-For detailed information about the API endpoints and how to use them, please refer to the [STUDENT_ASSIGNMENT.md](STUDENT_ASSIGNMENT.md) file included in this project.
-
 ### Task 2: Understanding the Current Implementation
 
 The project currently has a basic task management API with the following structure:
