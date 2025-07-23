@@ -1,0 +1,156 @@
+[
+  {
+    "id": "1",
+    "title": "Learn Node.js Fundamentals",
+    "description": "Complete the Node.js basics course and build a simple server",
+    "status": "in-progress",
+    "priority": "high",
+    "dueDate": "2024-01-15",
+    "assignedTo": "John Doe",
+    "subtasks": [
+      {
+        "id": "1.1",
+        "title": "Install Node.js",
+        "completed": true,
+        "description": "Download and install Node.js on your machine"
+      },
+      {
+        "id": "1.2",
+        "title": "Create First Server",
+        "completed": false,
+        "description": "Build a simple HTTP server using Express.js"
+      },
+      {
+        "id": "1.3",
+        "title": "Handle Routes",
+        "completed": false,
+        "description": "Learn how to create and handle different routes"
+      },
+      {
+        "id": "1.4",
+        "title": "Test Subtask",
+        "description": "This is a test subtask",
+        "completed": false
+      }
+    ],
+    "createdAt": "2024-01-01T10:30:00.000Z",
+    "updatedAt": "2025-07-23T01:29:37.667Z"
+  },
+  {
+    "id": "2",
+    "title": "Build REST API",
+    "description": "Create a complete REST API with CRUD operations",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": "2024-01-20",
+    "assignedTo": "Jane Smith",
+    "subtasks": [
+      {
+        "id": "2.1",
+        "title": "Design API Structure",
+        "completed": false,
+        "description": "Plan the API endpoints and data structure"
+      },
+      {
+        "id": "2.2",
+        "title": "Implement GET Routes",
+        "completed": false,
+        "description": "Create routes to retrieve data"
+      },
+      {
+        "id": "2.3",
+        "title": "Implement POST Routes",
+        "completed": false,
+        "description": "Create routes to add new data"
+      },
+      {
+        "id": "2.4",
+        "title": "Add Validation",
+        "completed": false,
+        "description": "Implement input validation and error handling"
+      }
+    ],
+    "createdAt": "2024-01-02T11:00:00.000Z",
+    "updatedAt": "2024-01-02T11:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "title": "Database Integration",
+    "description": "Connect the API to a database system",
+    "status": "completed",
+    "priority": "low",
+    "dueDate": "2024-01-10",
+    "assignedTo": "Mike Johnson",
+    "subtasks": [
+      {
+        "id": "3.1",
+        "title": "Choose Database",
+        "completed": true,
+        "description": "Select appropriate database (MongoDB/PostgreSQL)"
+      },
+      {
+        "id": "3.2",
+        "title": "Setup Connection",
+        "completed": true,
+        "description": "Configure database connection"
+      },
+      {
+        "id": "3.3",
+        "title": "Create Models",
+        "completed": true,
+        "description": "Define data models and schemas"
+      },
+      {
+        "id": "3.4",
+        "title": "Update API",
+        "completed": true,
+        "description": "Modify API to use database instead of JSON files"
+      }
+    ],
+    "createdAt": "2024-01-03T09:15:00.000Z",
+    "updatedAt": "2024-01-08T16:45:00.000Z"
+  },
+  {
+    "id": "4",
+    "title": "Frontend Development",
+    "description": "Build a React frontend to consume the API",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": "2024-01-25",
+    "assignedTo": "Alice Johnson",
+    "subtasks": [
+      {
+        "id": "4.1",
+        "title": "Setup React Project",
+        "completed": false,
+        "description": "Create new React application"
+      },
+      {
+        "id": "4.2",
+        "title": "Create Components",
+        "completed": false,
+        "description": "Build reusable UI components"
+      },
+      {
+        "id": "4.3",
+        "title": "Connect to API",
+        "completed": false,
+        "description": "Integrate frontend with backend API"
+      }
+    ],
+    "createdAt": "2024-01-04T13:20:00.000Z",
+    "updatedAt": "2024-01-04T13:20:00.000Z"
+  },
+  {
+    "id": "5",
+    "title": "Test",
+    "description": "Test",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "assignedTo": null,
+    "subtasks": [],
+    "createdAt": "2025-07-23T04:22:47.898Z",
+    "updatedAt": "2025-07-23T04:22:47.899Z"
+  }
+]
