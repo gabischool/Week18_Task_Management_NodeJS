@@ -152,5 +152,15 @@
     "subtasks": [],
     "createdAt": "2025-07-23T04:22:47.898Z",
     "updatedAt": "2025-07-23T04:22:47.899Z"
+  },
+  {
+    "id": "6",
+    "title": "Backend Development",
+    "description": "Build a NodeJs",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": "2025-07-26T10:58:38.944Z",
+    "assignedTo": null,
+    "subtasks": []
   }
 ]
