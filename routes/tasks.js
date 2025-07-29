@@ -153,80 +153,192 @@ router.post("/tasks", async (req, res) => {
   try {
     // TODO: Implement task creation
     // 1. Extract data from req.body (title, description, status, priority, etc.)
+    const { title, description, status, priority } = req.body;
+
     // 2. Validate the data using validateTaskData function
+
+    if (!title || !description || !status || !priority) {
+      return res.status(400).json({ error: "Missing reqiired fild" });
+    }
+
     // 3. Get all existing tasks using getAllTasks()
+    const tasks = await getAllTasks();
+
     // 4. Generate a new ID for the task
+    const newId =
+      tasks.length > 0
+        ? Math.max(...tasks.map((task) => parseInt(task.id))) + 1
+        : 1;
+
     // 5. Create a new task object with all required fields
+    const newTask = {
+      id: newId,
+      title: title,
+      description: description,
+      status: status,
+      priority: priority,
+      dueDate: null,
+      assignedTo: null,
+      subtasks: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
     // 6. Add the task to the tasks array
+    tasks.push(newTask);
+
     // 7. Save to file using writeTasks()
+    await writeTasks(tasks);
+
     // 8. Send success response with status 201
+    res.status(201).json({
+      success: true,
+      message: "create task succesfully",
+      data: newTask,
+    });
 
     // Temporary response - remove this when you implement the above
-    res.status(501).json({
-      success: false,
-      error:
-        "POST endpoint not implemented yet - implement task creation above",
-    });
   } catch (error) {
     res.status(500).json({
       success: false,
       error: "Error creating task",
-    }); // 500 = Server Error
+    }); // 500 = Server Error
   }
 });
 
-// PUT /api/tasks/:id - Update task
-// PUT requests are used to update existing resources
-// The entire resource is replaced with the new data
 router.put("/tasks/:id", async (req, res) => {
   try {
     // TODO: Implement task update
     // 1. Extract the task ID from req.params
+    const { id } = req.params;
+    //  console.log(id)
     // 2. Get the update data from req.body
+    const { title, description } = req.body;
+    // console.log( title,description)
+    //  const updateData = req.body;
+
     // 3. Validate the data if status or priority is being updated
+    if (!title || !description) {
+      return res.status(400).json({ error: "Missing reqiired fild" });
+    }
+    const tasks = await getAllTasks();
     // 4. Get all tasks and find the task by ID
+    const taskIndex = tasks.findIndex((task) => String(task.id) === id);
+    if (taskIndex === -1) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Task not found" });
+    }
+
+    console.log(tasks);
+
     // 5. Check if task exists, return 404 if not found
+
     // 6. Update the task with new data
+    const newData = { title: "title", description: "description" };
+    if (title) tasks[taskIndex].title = title;
+    if (description) tasks[taskIndex].description = description;
+
     // 7. Save to file using writeTasks()
+    await writeTasks(tasks);
+
     // 8. Send success response with the updated task
 
-    // Temporary response - remove this when you implement the above
-    res.status(501).json({
-      success: false,
-      error: "PUT endpoint not implemented yet - implement task update above",
+    res.status(200).json({
+      success: true,
+      message: "user updated successfully",
+      data: tasks[taskIndex],
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Error updating task",
-    }); // 500 = Server Error
+      error: error,
+    }); // 500 = Server Error
   }
 });
-
 // DELETE /api/tasks/:id - Delete task
 // DELETE requests are used to remove resources
+// router.delete("/tasks/:id", async (req, res) => {
+//   try {
+//     // TODO: Implement task deletion
+//     // 1. Extract the task ID from req.params
+//     // 2. Get all tasks and find the task by ID
+//     // 3. Check if task exists, return 404 if not found
+//     // 4. Store the task before deletion (for response)
+//     // 5. Remove the task from the array
+//     // 6. Save to file using writeTasks()
+//     // 7. Send success response with the deleted task
+
+//     // Temporary response - remove this when you implement the above
+//     //   res.status(501).json({
+//     //     success: false,
+//     //     error:
+//     //       "DELETE endpoint not implemented yet - implement task deletion above",
+//     //   });
+//     // } catch (error) {
+//     //   res.status(500).json({
+//     //     success: false,
+//     //     error: "Error deleting task",
+//     //   }); // 500 = Server Error
+
+//     const taskId = req.params.id;
+//     const tasks = readTasks();
+
+//     const taskIndex = tasks.findIndex((task) => task.id === taskId);
+
+//     if (taskIndex === -1) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Task not found",
+//       });
+//     }
+
+//     const deletedTask = tasks[taskIndex];
+//     tasks.splice(taskIndex, 1);
+
+//     writeTasks(tasks);
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Task deleted successfully",
+//       data: deletedTask,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       error: "Error deleting task",
+//     });
+//   }
+// });
+// DELETE /api/tasks/:id - Delete task by ID
 router.delete("/tasks/:id", async (req, res) => {
   try {
-    // TODO: Implement task deletion
-    // 1. Extract the task ID from req.params
-    // 2. Get all tasks and find the task by ID
-    // 3. Check if task exists, return 404 if not found
-    // 4. Store the task before deletion (for response)
-    // 5. Remove the task from the array
-    // 6. Save to file using writeTasks()
-    // 7. Send success response with the deleted task
+    const { id } = req.params;
 
-    // Temporary response - remove this when you implement the above
-    res.status(501).json({
-      success: false,
-      error:
-        "DELETE endpoint not implemented yet - implement task deletion above",
+    const tasks = await getAllTasks(); // Read all tasks from file
+    const taskIndex = tasks.findIndex((task) => String(task.id) === id); // Match ID as string
+
+    if (taskIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    const deletedTask = tasks.splice(taskIndex, 1)[0]; // Remove and store the deleted task
+
+    await writeTasks(tasks); // Write updated task list back to file
+
+    res.status(200).json({
+      success: true,
+      message: "Task deleted successfully",
+      data: deletedTask,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       error: "Error deleting task",
-    }); // 500 = Server Error
+    });
   }
 });
 
