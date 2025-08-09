@@ -160,6 +160,60 @@ router.post("/tasks", async (req, res) => {
     // 6. Add the task to the tasks array
     // 7. Save to file using writeTasks()
     // 8. Send success response with status 201
+      
+    // Path to tasks JSON file
+const tasksFilePath = path.join(__dirname, '../data/tasks.json');
+
+//create a function that gets all the tasks data 
+
+async function getAllTasks() {
+  try{
+    const data= await fs.readFile(dataFilePath, "utf8")
+    return data;
+  }catch(err) {
+    throw err
+  }
+}
+
+  //create endpoint that gets all tasks 
+
+  router.post("/", async(req,res)  => {
+    try{
+       const {id, title, description, status } =req.body
+       
+       if(!id || !title) {
+        return res.status(400).json({error:"Missing required field"})
+       }
+       
+    }catch (err) {
+      res.status(500).json({error:"Error adding tasks"})
+    }
+  })
+
+    //get all tasks
+    const tasks = await getAllTasks()
+
+    // create new ID for the new task
+    const newId =tasks.length >0 ?
+         Math.max(...tasks.map((s) => parse.Int(s.id))) +1 : 1
+
+         // let add the new task to the data
+         const newtask = {
+          id:newId.toString(),
+          title,
+          description,
+          status:status || null
+
+         }
+
+         //get all tasks, add the new task
+         tasks.push(newtask)
+
+         //now write all tasks in task.json
+         await writeTasks(tasks)
+
+         res.status(201).json (newtask)
+
 
     // Temporary response - remove this when you implement the above
     res.status(501).json({
@@ -175,6 +229,10 @@ router.post("/tasks", async (req, res) => {
   }
 });
 
+
+
+
+
 // PUT /api/tasks/:id - Update task
 // PUT requests are used to update existing resources
 // The entire resource is replaced with the new data
@@ -189,6 +247,85 @@ router.put("/tasks/:id", async (req, res) => {
     // 6. Update the task with new data
     // 7. Save to file using writeTasks()
     // 8. Send success response with the updated task
+// File path for tasks
+const tasksFilePath = path.join(__dirname, '../data/tasks.json');
+ 
+      
+
+// Helper: Read all tasks
+const getAllTasks =  () => {
+  if (!fs.existsSync(tasksFilePath)) {
+    return [];
+  }
+  const data = fs.readFileSync(tasksFilePath, 'utf-8');
+  return JSON.parse(data || '[]');
+};
+
+// Helper: Save all tasks
+const writeTasks = (tasks) => {
+  fs.writeFileSync(tasksFilePath, JSON.stringify(tasks, null, 2));
+};
+
+// ✅ PUT /api/tasks/:id - Update a task
+router.put("/tasks/:id", async (req, res) => {
+  try {
+    // Step 1: Extract the task ID from req.params
+    const taskId = req.params.id;
+
+    // Step 2: Get the update data from req.body
+    const updateData = req.body;
+
+    // Step 3: Validate the data if status or priority is being updated
+    if (
+      (updateData.status && typeof updateData.status !== 'string') ||
+      (updateData.priority && typeof updateData.priority !== 'string')
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid data format for status or priority'
+      });
+    }
+
+    // Step 4: Get all tasks and find the task by ID
+    const tasks = getAllTasks();
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+
+    // Step 5: Check if task exists, return 404 if not found
+    if (taskIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Task not found'
+      });
+    }
+
+    // Step 6: Update the task with new data
+    const updatedTask = {
+      ...tasks[taskIndex],
+      ...updateData,
+      updatedAt: new Date().toISOString()
+    };
+    tasks[taskIndex] = updatedTask;
+
+    // Step 7: Save to file using writeTasks()
+    writeTasks(tasks);
+
+    // Step 8: Send success response with the updated task
+    res.status(200).json({
+      success: true,
+      task: updatedTask
+    });
+
+  } catch (error) {
+    console.error('Error updating task:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
+
+ 
 
     // Temporary response - remove this when you implement the above
     res.status(501).json({
@@ -216,6 +353,63 @@ router.delete("/tasks/:id", async (req, res) => {
     // 6. Save to file using writeTasks()
     // 7. Send success response with the deleted task
 
+
+// Path to tasks JSON file
+const tasksFilePath = path.join(__dirname, '../data/tasks.json');
+
+// Read all tasks
+const getAllTasks = () => {
+  if (!fs.existsSync(tasksFilePath)) {
+    return [];
+  }
+  const data = fs.readFileSync(tasksFilePath, 'utf-8');
+  return JSON.parse(data || '[]');
+};
+
+// Save updated tasks to file
+const writeTasks = (tasks) => {
+  fs.writeFileSync(tasksFilePath, JSON.stringify(tasks, null, 2));
+};
+
+// ✅ DELETE /api/tasks/:id - Delete a task by ID
+router.delete("/tasks/:id", async (req, res) => {
+  try {
+    // Step 1: Extract the task ID from the URL
+    const taskId = req.params.id;
+
+    // Step 2: Get all existing tasks
+    const tasks = getAllTasks();
+
+    // Step 3: Check if the task exists
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+    if (taskIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Task not found'
+      });
+    }
+
+    // Step 4: Remove the task from the array
+    const deletedTask = tasks.splice(taskIndex, 1)[0];
+
+    // Step 5: Save the updated tasks list to file
+    writeTasks(tasks);
+
+    // Step 6: Return a success response
+    res.status(200).json({
+      success: true,
+      message: 'Task deleted successfully',
+      task: deletedTask
+    });
+
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
     // Temporary response - remove this when you implement the above
     res.status(501).json({
       success: false,
