@@ -152,5 +152,21 @@
     "subtasks": [],
     "createdAt": "2025-07-23T04:22:47.898Z",
     "updatedAt": "2025-07-23T04:22:47.899Z"
+  },
+  {
+    "id": "me2rq0pr67vivr",
+    "title": "Write poetry for Abdul",
+    "description": "Express feelings through verses",
+    "status": "pending",
+    "priority": "high",
+    "dueDate": "2025-08-10",
+    "assignedTo": "Abdullahi",
+    "subtasks": [
+      "Draft lines",
+      "Add metaphor",
+      "Review rhythm"
+    ],
+    "createdAt": "2025-08-08T11:54:18.783Z",
+    "updatedAt": "2025-08-08T11:54:18.783Z"
   }
 ]
