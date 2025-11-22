@@ -1,10 +1,10 @@
 [
   {
     "id": "1",
-    "title": "Learn Node.js Fundamentals",
+    "title": "Learn Node.js Basics (Updated)",
     "description": "Complete the Node.js basics course and build a simple server",
-    "status": "in-progress",
-    "priority": "high",
+    "status": "completed",
+    "priority": "urgent",
     "dueDate": "2024-01-15",
     "assignedTo": "John Doe",
     "subtasks": [
@@ -34,7 +34,7 @@
       }
     ],
     "createdAt": "2024-01-01T10:30:00.000Z",
-    "updatedAt": "2025-07-23T01:29:37.667Z"
+    "updatedAt": "2025-11-22T19:04:26.202Z"
   },
   {
     "id": "2",
@@ -72,43 +72,6 @@
     ],
     "createdAt": "2024-01-02T11:00:00.000Z",
     "updatedAt": "2024-01-02T11:00:00.000Z"
-  },
-  {
-    "id": "3",
-    "title": "Database Integration",
-    "description": "Connect the API to a database system",
-    "status": "completed",
-    "priority": "low",
-    "dueDate": "2024-01-10",
-    "assignedTo": "Mike Johnson",
-    "subtasks": [
-      {
-        "id": "3.1",
-        "title": "Choose Database",
-        "completed": true,
-        "description": "Select appropriate database (MongoDB/PostgreSQL)"
-      },
-      {
-        "id": "3.2",
-        "title": "Setup Connection",
-        "completed": true,
-        "description": "Configure database connection"
-      },
-      {
-        "id": "3.3",
-        "title": "Create Models",
-        "completed": true,
-        "description": "Define data models and schemas"
-      },
-      {
-        "id": "3.4",
-        "title": "Update API",
-        "completed": true,
-        "description": "Modify API to use database instead of JSON files"
-      }
-    ],
-    "createdAt": "2024-01-03T09:15:00.000Z",
-    "updatedAt": "2024-01-08T16:45:00.000Z"
   },
   {
     "id": "4",
@@ -152,5 +115,23 @@
     "subtasks": [],
     "createdAt": "2025-07-23T04:22:47.898Z",
     "updatedAt": "2025-07-23T04:22:47.899Z"
+  },
+  {
+    "id": "6",
+    "title": "Create New Feature",
+    "description": "Build authentication module",
+    "status": "pending",
+    "priority": "high",
+    "dueDate": "2025-07-30",
+    "assignedTo": "Jamal",
+    "subtasks": [
+      {
+        "id": "6.1",
+        "title": "Design UI",
+        "completed": false
+      }
+    ],
+    "createdAt": "2025-11-22T19:03:19.294Z",
+    "updatedAt": "2025-11-22T19:03:19.294Z"
   }
 ]
