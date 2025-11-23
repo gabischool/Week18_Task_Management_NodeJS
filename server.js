@@ -8,6 +8,8 @@ import taskRoutes from "./routes/tasks.js";
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(cors())
+
 
 // Middleware
 app.use(cors()); // Enable CORS for all routes
