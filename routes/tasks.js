@@ -150,16 +150,65 @@ router.get("/tasks/:id", async (req, res) => {
 // POST requests are used to create new resources
 // req.body contains the data sent in the request body
 router.post("/tasks", async (req, res) => {
+
   try {
     // TODO: Implement task creation
     // 1. Extract data from req.body (title, description, status, priority, etc.)
+
+     const { title, description, status, priority, assignedTo,  subtasks} = req.body;
+
+
     // 2. Validate the data using validateTaskData function
+    const validation = validateTaskData({ title, description, status, priority, assignedTo });
+    if (!validation.isValid) {
+      return res.status(400).json({
+        success: false,
+        error: validation.error,
+      }); // 400 = Bad Request
+    }
+
     // 3. Get all existing tasks using getAllTasks()
+    const tasks = await getAllTasks();
+
     // 4. Generate a new ID for the task
+    const newId = (tasks.length + 1).toString();
+
     // 5. Create a new task object with all required fields
+
+       let processedSubtasks = [];
+
+    if (Array.isArray(subtasks)) {
+      processedSubtasks = subtasks.map((subtask, index) => ({
+        id: `${newId}.${index + 1}`, 
+        title: subtask.title || "Untitled Subtask",
+        description: subtask.description || "",
+        completed: subtask.completed || false,
+      }));
+    }
+
+    const newTask = {
+      id: newId,
+      title,
+      description,
+      status,
+      priority,
+      assignedTo: assignedTo || null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      subtasks:  processedSubtasks,
+    };
+
     // 6. Add the task to the tasks array
+    tasks.push(newTask);
+
     // 7. Save to file using writeTasks()
+    await writeTasks(tasks);
+    
     // 8. Send success response with status 201
+    res.status(201).json({
+      success: true,
+      data: newTask,
+    });
 
     // Temporary response - remove this when you implement the above
     res.status(501).json({
@@ -181,14 +230,60 @@ router.post("/tasks", async (req, res) => {
 router.put("/tasks/:id", async (req, res) => {
   try {
     // TODO: Implement task update
+
     // 1. Extract the task ID from req.params
+    const { id } = req.params;
+
+
     // 2. Get the update data from req.body
+    const updateData = req.body;
+
+
     // 3. Validate the data if status or priority is being updated
+    if (updateData.status || updateData.priority) {
+      const validation = validateTaskData({
+        ...updateData,
+        title: updateData.title || "Temp",
+        description: updateData.description || "Temp",
+      });
+      if (!validation.isValid) {
+        return res.status(400).json({
+          success: false,
+          error: validation.error,
+        }); // 400 = Bad Request
+      }
+    }
+
     // 4. Get all tasks and find the task by ID
+    const tasks = await getAllTasks();
+    const taskIndex = tasks.findIndex((task) => task.id === id);
+
+
     // 5. Check if task exists, return 404 if not found
+    if (taskIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        error: "Task not found",
+      }); // 404 = Not Found
+    }
+
+
     // 6. Update the task with new data
+    const existingTask = tasks[taskIndex];
+    const updatedTask = {
+      ...existingTask,
+      ...updateData,
+      updatedAt: new Date().toISOString(), // Update the updatedAt timestamp
+    };
+    tasks[taskIndex] = updatedTask;
+
     // 7. Save to file using writeTasks()
+    await writeTasks(tasks);
     // 8. Send success response with the updated task
+    res.json({
+      success: true,
+      data: updatedTask,
+    });
 
     // Temporary response - remove this when you implement the above
     res.status(501).json({
@@ -209,12 +304,40 @@ router.delete("/tasks/:id", async (req, res) => {
   try {
     // TODO: Implement task deletion
     // 1. Extract the task ID from req.params
+    const { id } = req.params;
+
+
     // 2. Get all tasks and find the task by ID
+    const tasks = await getAllTasks();
+    const taskIndex = tasks.findIndex((task) => task.id === id);
+
+
     // 3. Check if task exists, return 404 if not found
+    if (taskIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        error: "Task not found",
+      }); // 404 = Not Found
+    }
+
+
     // 4. Store the task before deletion (for response)
+    const deletedTask = tasks[taskIndex];
+
+
+
     // 5. Remove the task from the array
+    tasks.splice(taskIndex, 1);
+
+
     // 6. Save to file using writeTasks()
+    await writeTasks(tasks);
+
     // 7. Send success response with the deleted task
+    res.json({
+      success: true,
+      data: deletedTask,
+    });
 
     // Temporary response - remove this when you implement the above
     res.status(501).json({

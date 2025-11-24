@@ -139,18 +139,6 @@
       }
     ],
     "createdAt": "2024-01-04T13:20:00.000Z",
-    "updatedAt": "2024-01-04T13:20:00.000Z"
-  },
-  {
-    "id": "5",
-    "title": "Test",
-    "description": "Test",
-    "status": "pending",
-    "priority": "medium",
-    "dueDate": null,
-    "assignedTo": null,
-    "subtasks": [],
-    "createdAt": "2025-07-23T04:22:47.898Z",
-    "updatedAt": "2025-07-23T04:22:47.899Z"
+    "updatedAt": "2025-11-24T12:55:42.080Z"
   }
 ]
