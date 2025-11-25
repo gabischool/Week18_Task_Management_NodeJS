@@ -152,5 +152,42 @@
     "subtasks": [],
     "createdAt": "2025-07-23T04:22:47.898Z",
     "updatedAt": "2025-07-23T04:22:47.899Z"
+  },
+  {
+    "id": 6,
+    "title": "Task 1",
+    "description": "This is my first task",
+    "status": "pending",
+    "priority": "high"
+  },
+  {
+    "id": 7,
+    "title": "Build REST API",
+    "description": "Create a complete REST API with CRUD operations",
+    "status": "pending",
+    "priority": "medium",
+    "assignedTo": "Jane Smith",
+    "subtasks": [
+      {
+        "title": "Design API Structure",
+        "completed": false,
+        "description": "Plan the API endpoints and data structure"
+      },
+      {
+        "title": "Implement GET Routes",
+        "completed": false,
+        "description": "Create routes to retrieve data"
+      },
+      {
+        "title": "Implement POST Routes",
+        "completed": false,
+        "description": "Create routes to add new data"
+      },
+      {
+        "title": "Add Validation",
+        "completed": false,
+        "description": "Implement input validation and error handling"
+      }
+    ]
   }
 ]
