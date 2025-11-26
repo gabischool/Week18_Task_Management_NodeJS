@@ -3,7 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 // Import routes
-import taskRoutes from "./routes/tasks.js";
+import taskRoute from "./routes/taskRoute.js";
 
 // Initialize Express app
 const app = express();
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 
 // Mount API routes
-app.use("/api", taskRoutes);
+app.use("/api/tasks", taskRoute);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -35,6 +35,12 @@ app.use("*", (req, res) => {
     message: "Route not found",
   });
 });
+
+//Basic API
+
+app.get("/", (req, res) => {
+  res.json({message: "Welcome to NODE JS and EXPRESS"})
+})
 
 // Start server
 app.listen(PORT, () => {
