@@ -1,4 +1,4 @@
-# Week 18: Task Management API with Node.js
+ # Week 18: Task Management API with Node.js
 
 ## RESTful API Development and CRUD Operations
 
@@ -25,7 +25,6 @@
 The project currently has a basic task management API with the following structure:
 
 #### Current API Endpoints
-
 **Main Task Operations:**
 
 - `GET /api/tasks` - Get all tasks (with filtering by status, priority, assignedTo)

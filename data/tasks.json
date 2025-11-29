@@ -152,5 +152,41 @@
     "subtasks": [],
     "createdAt": "2025-07-23T04:22:47.898Z",
     "updatedAt": "2025-07-23T04:22:47.899Z"
+  },
+  {
+    "id": 9,
+    "title": "fullstack dev2",
+    "description": "Build a React frontend to consume the API",
+    "status": "pending",
+    "priority": "medium",
+    "assignedTo": "Alice Johnson"
+  },
+  {
+    "id": 10,
+    "title": "fullstack dev3",
+    "description": "Build a React frontend to consume the API",
+    "status": "pending",
+    "priority": "medium",
+    "subtasks": [
+      {
+        "id": "4.1",
+        "title": "Setup React Project",
+        "completed": false,
+        "description": "Create new React application"
+      },
+      {
+        "id": "4.2",
+        "title": "Create Components",
+        "completed": false,
+        "description": "Build reusable UI components"
+      },
+      {
+        "id": "4.3",
+        "title": "Connect to API",
+        "completed": false,
+        "description": "Integrate frontend with backend API"
+      }
+    ],
+    "assignedTo": "Alice Johnson"
   }
 ]
