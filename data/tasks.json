@@ -7,6 +7,16 @@
     "priority": "medium",
     "dueDate": "2024-01-20",
     "assignedTo": "Jane Smith",
+    "createdBy": {
+      "id": 1,
+      "name": "Liban",
+      "email": "liban10001@gmail.com"
+    },
+    "assignedBy": {
+      "id": 3,
+      "name": "Ahmed",
+      "email": "ahmedyuu@gmail.com"
+    },
     "subtasks": [
       {
         "id": "2.1",
@@ -44,6 +54,16 @@
     "priority": "high",
     "dueDate": "2026-08-20",
     "assignedTo": "Liban",
+    "createdBy": {
+      "id": 1,
+      "name": "Yahye",
+      "email": "yahye01@gmail.com"
+    },
+    "assignedBy": {
+      "id": 3,
+      "name": "Jimcale",
+      "email": "jimcale@gmail.com"
+    },
     "subtasks": [],
     "createdAt": "2024-01-03T09:15:00.000Z",
     "updatedAt": "2026-08-07T10:41:52.343Z"
@@ -87,6 +107,16 @@
     "priority": "high",
     "dueDate": "2026-08-15",
     "assignedTo": "Liban",
+    "createdBy": {
+      "id": 1,
+      "name": "Farah",
+      "email": "farah@gmail.com"
+    },
+    "assignedBy": {
+      "id": 3,
+      "name": "Geeddi",
+      "email": "geeddi@gmail.com"
+    },
     "subtasks": [
       {
         "id": "5.1",
@@ -141,5 +171,48 @@
     ],
     "createdAt": "2026-08-07T05:27:26.174Z",
     "updatedAt": "2026-08-07T05:27:26.174Z"
+  },
+  {
+    "id": 8,
+    "title": "Build Login Page",
+    "description": "Create the login page for the application",
+    "status": "pending",
+    "priority": "high",
+    "dueDate": "2026-08-20",
+    "assignedTo": "Ahmed Ali",
+    "subtasks": [],
+    "createdAt": "2026-08-09T13:59:46.102Z",
+    "updatedAt": "2026-08-09T13:59:46.102Z"
+  },
+  {
+    "id": 9,
+    "title": "Build Login Page",
+    "description": "Create the login page for the application",
+    "status": "pending",
+    "priority": "high",
+    "dueDate": null,
+    "assignedTo": null,
+    "subtasks": [],
+    "createdAt": "2026-08-09T14:06:14.839Z",
+    "updatedAt": "2026-08-09T14:06:14.839Z"
+  },
+  {
+    "id": 10,
+    "title": "Build Login Page",
+    "description": "Create the login page for the application",
+    "status": "pending",
+    "priority": "high",
+    "dueDate": null,
+    "assignedTo": null,
+    "subtasks": [],
+    "createdBy": {
+      "id": "10",
+      "name": "Mohamed Hassan",
+      "email": "mohamed@example.com"
+    },
+    "assignedBy": null,
+    "updatedBy": null,
+    "createdAt": "2026-08-09T14:08:57.848Z",
+    "updatedAt": "2026-08-09T14:08:57.851Z"
   }
 ]

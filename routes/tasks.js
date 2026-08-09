@@ -72,6 +72,26 @@ function validateTaskData(taskData) {
   return { isValid: true };
 }
 
+function validateUserData(userData) {
+  if (!userData) {
+    return {
+      isValid: false,
+      error: "User information is required",
+    };
+  }
+
+  if (!userData.id || !userData.name || !userData.email) {
+    return {
+      isValid: false,
+      error: "User must have id, name, and email",
+    };
+  }
+
+  return {
+    isValid: true,
+  };
+}
+
 // GET /api/tasks - Get all tasks
 // This route handles GET requests to /api/tasks
 // req = request object (contains data sent by client)
@@ -103,6 +123,19 @@ router.get("/tasks", async (req, res) => {
         task.assignedTo
           .toLowerCase()
           .includes(req.query.assignedTo.toLowerCase()),
+      );
+    }
+    //createdBy filter
+    if (req.query.createdBy) {
+      filteredTasks = filteredTasks.filter(
+        (task) => task.createdBy?.id === req.query.createdBy,
+      );
+    }
+
+    //filter for assignedby
+    if (req.query.assignedBy) {
+      filteredTasks = filteredTasks.filter(
+        (task) => task.assignedBy?.id === req.query.assignedBy,
       );
     }
 
@@ -162,6 +195,7 @@ router.post("/tasks", async (req, res) => {
       dueDate,
       assignedTo,
       subtasks,
+      createdBy,
     } = req.body;
 
     // 2. Validate the data using validateTaskData function
@@ -176,6 +210,15 @@ router.post("/tasks", async (req, res) => {
       return res.status(400).json({
         success: false,
         error: validation.error,
+      });
+    }
+
+    const userValidation = validateUserData(createdBy);
+
+    if (!userValidation.isValid) {
+      return res.status(400).json({
+        success: false,
+        error: userValidation.error,
       });
     }
     // 3. Get all existing tasks using getAllTasks()
@@ -193,6 +236,9 @@ router.post("/tasks", async (req, res) => {
       dueDate: dueDate || null,
       assignedTo: assignedTo || null,
       subtasks: subtasks || [],
+      createdBy: createdBy,
+      assignedBy: null,
+      updatedBy: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -205,6 +251,8 @@ router.post("/tasks", async (req, res) => {
       success: true,
       data: newTask,
     });
+
+    console.log("CreatedBy", createdBy);
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -231,6 +279,9 @@ router.put("/tasks/:id", async (req, res) => {
       dueDate,
       assignedTo,
       subtasks,
+      createdBy,
+      assignedBy,
+      updatedBy,
     } = req.body;
 
     // 3. Validate the data if status or priority is being updated
@@ -245,6 +296,35 @@ router.put("/tasks/:id", async (req, res) => {
       return res.status(400).json({
         success: false,
         error: validation.error,
+      });
+    }
+
+    const createdByValidation = validateUserData(createdBy);
+
+    if (!createdByValidation.isValid) {
+      return res.status(400).json({
+        success: false,
+        error: createdByValidation.error,
+      });
+    }
+
+    if (assignedBy) {
+      const assignedByValidation = validateUserData(assignedBy);
+
+      if (!assignedByValidation.isValid) {
+        return res.status(400).json({
+          success: false,
+          error: assignedByValidation.error,
+        });
+      }
+    }
+
+    const updatedByValidation = validateUserData(updatedBy);
+
+    if (!updatedByValidation.isValid) {
+      return res.status(400).json({
+        success: false,
+        error: updatedByValidation.error,
       });
     }
     // 4. Get all tasks and find the task by ID
@@ -265,6 +345,9 @@ router.put("/tasks/:id", async (req, res) => {
     task.dueDate = dueDate || null;
     task.assignedTo = assignedTo || null;
     task.subtasks = subtasks || [];
+    task.createdBy = createdBy;
+    task.assignedBy = assignedBy || null;
+    task.updatedBy = updatedBy;
     task.updatedAt = new Date().toISOString();
     // 7. Save to file using writeTasks()
     await writeTasks(tasks);
