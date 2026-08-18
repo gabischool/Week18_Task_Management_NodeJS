@@ -98,10 +98,12 @@ router.get("/tasks", async (req, res) => {
 
     // Filter by assignedTo if provided
     if (req.query.assignedTo) {
-      filteredTasks = filteredTasks.filter((task) =>
-        task.assignedTo
-          .toLowerCase()
-          .includes(req.query.assignedTo.toLowerCase())
+      filteredTasks = filteredTasks.filter(
+        (task) =>
+          typeof task.assignedTo === "string" &&
+          task.assignedTo
+            .toLowerCase()
+            .includes(req.query.assignedTo.toLowerCase())
       );
     }
 
@@ -151,21 +153,41 @@ router.get("/tasks/:id", async (req, res) => {
 // req.body contains the data sent in the request body
 router.post("/tasks", async (req, res) => {
   try {
-    // TODO: Implement task creation
-    // 1. Extract data from req.body (title, description, status, priority, etc.)
-    // 2. Validate the data using validateTaskData function
-    // 3. Get all existing tasks using getAllTasks()
-    // 4. Generate a new ID for the task
-    // 5. Create a new task object with all required fields
-    // 6. Add the task to the tasks array
-    // 7. Save to file using writeTasks()
-    // 8. Send success response with status 201
+    const validation = validateTaskData(req.body);
 
-    // Temporary response - remove this when you implement the above
-    res.status(501).json({
-      success: false,
-      error:
-        "POST endpoint not implemented yet - implement task creation above",
+    if (!validation.isValid) {
+      return res.status(400).json({
+        success: false,
+        error: validation.error,
+      });
+    }
+
+    const tasks = await getAllTasks();
+    const numericIds = tasks
+      .map((task) => Number.parseInt(task.id, 10))
+      .filter((id) => Number.isInteger(id));
+    const newId = String(Math.max(0, ...numericIds) + 1);
+    const now = new Date().toISOString();
+
+    const newTask = {
+      id: newId,
+      title: req.body.title,
+      description: req.body.description,
+      status: req.body.status,
+      priority: req.body.priority,
+      dueDate: req.body.dueDate ?? null,
+      assignedTo: req.body.assignedTo ?? null,
+      subtasks: Array.isArray(req.body.subtasks) ? req.body.subtasks : [],
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    tasks.push(newTask);
+    await writeTasks(tasks);
+
+    res.status(201).json({
+      success: true,
+      data: newTask,
     });
   } catch (error) {
     res.status(500).json({
@@ -180,20 +202,45 @@ router.post("/tasks", async (req, res) => {
 // The entire resource is replaced with the new data
 router.put("/tasks/:id", async (req, res) => {
   try {
-    // TODO: Implement task update
-    // 1. Extract the task ID from req.params
-    // 2. Get the update data from req.body
-    // 3. Validate the data if status or priority is being updated
-    // 4. Get all tasks and find the task by ID
-    // 5. Check if task exists, return 404 if not found
-    // 6. Update the task with new data
-    // 7. Save to file using writeTasks()
-    // 8. Send success response with the updated task
+    const validation = validateTaskData(req.body);
 
-    // Temporary response - remove this when you implement the above
-    res.status(501).json({
-      success: false,
-      error: "PUT endpoint not implemented yet - implement task update above",
+    if (!validation.isValid) {
+      return res.status(400).json({
+        success: false,
+        error: validation.error,
+      });
+    }
+
+    const tasks = await getAllTasks();
+    const taskIndex = tasks.findIndex((task) => task.id === req.params.id);
+
+    if (taskIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        error: "Task not found",
+      });
+    }
+
+    const existingTask = tasks[taskIndex];
+    const updatedTask = {
+      id: existingTask.id,
+      title: req.body.title,
+      description: req.body.description,
+      status: req.body.status,
+      priority: req.body.priority,
+      dueDate: req.body.dueDate ?? null,
+      assignedTo: req.body.assignedTo ?? null,
+      subtasks: Array.isArray(req.body.subtasks) ? req.body.subtasks : [],
+      createdAt: existingTask.createdAt,
+      updatedAt: new Date().toISOString(),
+    };
+
+    tasks[taskIndex] = updatedTask;
+    await writeTasks(tasks);
+
+    res.json({
+      success: true,
+      data: updatedTask,
     });
   } catch (error) {
     res.status(500).json({
@@ -207,20 +254,22 @@ router.put("/tasks/:id", async (req, res) => {
 // DELETE requests are used to remove resources
 router.delete("/tasks/:id", async (req, res) => {
   try {
-    // TODO: Implement task deletion
-    // 1. Extract the task ID from req.params
-    // 2. Get all tasks and find the task by ID
-    // 3. Check if task exists, return 404 if not found
-    // 4. Store the task before deletion (for response)
-    // 5. Remove the task from the array
-    // 6. Save to file using writeTasks()
-    // 7. Send success response with the deleted task
+    const tasks = await getAllTasks();
+    const taskIndex = tasks.findIndex((task) => task.id === req.params.id);
 
-    // Temporary response - remove this when you implement the above
-    res.status(501).json({
-      success: false,
-      error:
-        "DELETE endpoint not implemented yet - implement task deletion above",
+    if (taskIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        error: "Task not found",
+      });
+    }
+
+    const [deletedTask] = tasks.splice(taskIndex, 1);
+    await writeTasks(tasks);
+
+    res.json({
+      success: true,
+      data: deletedTask,
     });
   } catch (error) {
     res.status(500).json({
