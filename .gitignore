@@ -226,4 +226,4 @@ Thumbs.db
 
 # Configuration files with sensitive data
 config/local.json
-config/production.json 
+config/production.json
