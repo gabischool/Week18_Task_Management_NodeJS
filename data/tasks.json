@@ -152,5 +152,17 @@
     "subtasks": [],
     "createdAt": "2025-07-23T04:22:47.898Z",
     "updatedAt": "2025-07-23T04:22:47.899Z"
+  },
+  {
+    "id": "6",
+    "title": "My first Postman task",
+    "description": "Testing task creation",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "assignedTo": null,
+    "subtasks": [],
+    "createdAt": "2026-10-23T13:28:09.488Z",
+    "updatedAt": "2026-10-23T13:28:09.488Z"
   }
 ]
